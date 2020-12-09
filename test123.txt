@@ -3,6 +3,6 @@ test2nd line
 test3rd line
 test4th line
 test5th line
-test6th aboutline1258
+test6th aboutconflictline1258
 test6th line1258
 test7th line
