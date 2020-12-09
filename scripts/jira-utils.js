@@ -1,15 +1,5 @@
 const fetch = require("node-fetch")
 const inquirer = require("inquirer")
-const fs = require("fs")
-const dotenv = require("dotenv")
-const promisify = require("util").promisify
-const readFile = promisify(fs.readFile)
-
-// fill JIRA_USERNAME and JIRA_API_TOKEN in .env
-// with your email and a token generated here:
-// https://id.atlassian.com/manage-profile/security/api-tokens
-var JIRA_USERNAME
-var JIRA_API_TOKEN
 
 module.exports = {
   projectName: "Rider Experience",
@@ -55,16 +45,12 @@ module.exports = {
     return `Rider App ${packageInfo.version}`
   },
 
-  loadJiraCredentials: async function () {
-    const envfile = await readFile("./.env", "utf-8")
-    const env = dotenv.parse(global.Buffer.from(envfile))
-    JIRA_USERNAME = env.JIRA_USERNAME
-    JIRA_API_TOKEN = env.JIRA_API_TOKEN
-  },
-
   headersWithAuth: function (headers) {
     const auth =
-      "Basic " + global.Buffer.from(JIRA_USERNAME + ":" + JIRA_API_TOKEN).toString("base64")
+      "Basic " +
+      global.Buffer.from(process.env.JIRA_USERNAME + ":" + process.env.JIRA_API_TOKEN).toString(
+        "base64"
+      )
     return Object.assign(headers, { Authorization: auth })
   },
 
@@ -168,12 +154,11 @@ module.exports = {
     return false
   },
 
-
   isReleaseReady: async function (issue_id) {
     const jqlSearch = encodeURIComponent(
       `project = "${
         this.projectName
-      }" AND fixVersion = "${this.releaseName()}" AND issueKey="${issue_id}" AND status="Product Release Ready"`
+      }" AND fixVersion = "${this.releaseName()}" AND issueKey="${issue_id}" AND status="Product Release Ready" `
     )
 
     const jqlSearchUrl = this.jqlSearchBaseUrl + jqlSearch
@@ -216,10 +201,14 @@ module.exports = {
         const linksToTicketsThatBlockWrapper = searchResponseJson.issues[
           issue
         ].fields.issuelinks.filter((link) => link.type.inward === "is blocked by")
-        Array.prototype.push.apply(
-          linkedIssues,
-          linksToTicketsThatBlockWrapper.map((link) => link.inwardIssue.key)
-        )
+        try {
+          Array.prototype.push.apply(
+            linkedIssues,
+            linksToTicketsThatBlockWrapper.map((link) => link.inwardIssue.key)
+          )
+        } catch (err) {
+          console.log(err)
+        }
       }
     }
     return linkedIssues

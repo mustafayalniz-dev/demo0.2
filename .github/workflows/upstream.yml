@@ -1,4 +1,4 @@
-name: Create upstream pull request
+name: Create upstream merge or Pull Request
 on:
   pull_request:
     branches:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   generate-matrix:
-    name: Generate matrix for merge action of ${{  github.head_ref }}
+    name: Generate matrix for PR or merge action of ${{  github.head_ref }}
     if: github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'temporary')
     runs-on: ubuntu-latest
     outputs:
@@ -44,7 +44,7 @@ jobs:
           from_branch: ${{  github.head_ref }}
           target_branch: ${{ matrix.upstream_release }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: pull-request
+      - name: pull-request ${{  github.head_ref }} to Upstream Release "${{ matrix.upstream_release }}"
         if:   ${{ failure() }}
         uses: repo-sync/pull-request@v2
         with:
@@ -61,6 +61,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: set assignees and reviewers
+        run: | 
+          echo "assignees=$(node scripts/getPRMeta.js assignees)" >> $GITHUB_ENV
+          echo "reviewers=$(node scripts/getPRMeta.js reviewers)" >> $GITHUB_ENV
       - name: Merge ${{  github.head_ref }} -> develop
         if:   ${{ matrix.upstream_release }} != ''
         uses: devmasx/merge-branch@v1.3.1
@@ -69,7 +73,7 @@ jobs:
           from_branch: ${{  github.head_ref }}
           target_branch: develop
           github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: pull-request
+      - name: pull-request ${{  github.head_ref }} to develop"
         if:   ${{ failure() }}
         uses: repo-sync/pull-request@v2
         with:
@@ -78,5 +82,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Pulling ${{ github.head_ref }} into develop "
           pr_body: "*An automated PR for Release Train Branch develop * "
-          pr_reviewer: "mluedke,sbiren"
-          pr_assignee: "mluedke,sbiren"
+          pr_reviewer: ${{ env.reviewers }}
+          pr_assignee: ${{ env.assignees }}
