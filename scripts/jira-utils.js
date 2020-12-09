@@ -141,7 +141,6 @@ module.exports = {
     )
 
     const jqlSearchUrl = this.jqlSearchBaseUrl + jqlSearch
-    console.log(jqlSearchUrl)
     const searchResponse = await fetch(`${this.baseUrl}${jqlSearchUrl}`, {
       headers: this.headersWithAuth({}),
     })
