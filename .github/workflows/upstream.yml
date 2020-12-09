@@ -38,6 +38,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Merge ${{  github.head_ref }} -> ${{ matrix.upstream_release }}
         if:   ${{ matrix.upstream_release }} != ''
+        continue-on-error: true
         uses: devmasx/merge-branch@v1.3.1
         with:
           type: now
@@ -67,6 +68,7 @@ jobs:
           echo "reviewers=$(node scripts/getPRMeta.js reviewers)" >> $GITHUB_ENV
       - name: Merge ${{  github.head_ref }} -> develop
         if:   ${{ matrix.upstream_release }} != ''
+        continue-on-error: true
         uses: devmasx/merge-branch@v1.3.1
         with:
           type: now
