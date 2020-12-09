@@ -39,6 +39,7 @@ jobs:
       - name: Merge ${{  github.head_ref }} -> ${{ matrix.upstream_release }}
         if:   ${{ matrix.upstream_release }} != ''
         continue-on-error: true
+        id: upstream-merge
         uses: devmasx/merge-branch@v1.3.1
         with:
           type: now
@@ -46,7 +47,7 @@ jobs:
           target_branch: ${{ matrix.upstream_release }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: pull-request ${{  github.head_ref }} to Upstream Release "${{ matrix.upstream_release }}"
-        if:   ${{ failure() }}
+        if: steps.upstream-merge.outcome == 'failure'
         uses: repo-sync/pull-request@v2
         with:
           source_branch: ${{  github.head_ref }}
@@ -69,6 +70,7 @@ jobs:
       - name: Merge ${{  github.head_ref }} -> develop
         if:   ${{ matrix.upstream_release }} != ''
         continue-on-error: true
+        id: develop-merge
         uses: devmasx/merge-branch@v1.3.1
         with:
           type: now
@@ -76,7 +78,7 @@ jobs:
           target_branch: develop
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: pull-request ${{  github.head_ref }} to develop"
-        if:   ${{ failure() }}
+        if:   steps.develop-merge.outcome == 'failure'
         uses: repo-sync/pull-request@v2
         with:
           source_branch: ${{  github.head_ref }}
