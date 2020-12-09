@@ -158,7 +158,7 @@ module.exports = {
     const jqlSearch = encodeURIComponent(
       `project = "${
         this.projectName
-      }" AND fixVersion = "${this.releaseName()}" AND issueKey="${issue_id}" AND status="Product Release Ready" )`
+      }" AND fixVersion = "${this.releaseName()}" AND issueKey="${issue_id}" AND status="Product Release Ready" `
     )
 
     const jqlSearchUrl = this.jqlSearchBaseUrl + jqlSearch
