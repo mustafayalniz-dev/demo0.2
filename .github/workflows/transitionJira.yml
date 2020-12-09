@@ -1,4 +1,4 @@
-name: Create Jira Comment with all commit details in Push
+name: Transition Jira Issue when Pull Request Merged
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   push:
-    name: Jira Comment Event with commit details
+    name: Transition Jira Issue when Pull Request Merged
     if: github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'temporary')
     runs-on: ubuntu-latest
     steps:
