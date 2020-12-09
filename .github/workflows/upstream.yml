@@ -82,5 +82,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Pulling ${{ github.head_ref }} into develop "
           pr_body: "*An automated PR for Release Train Branch develop * "
-          pr_reviewer: ${{ reviewers }}
-          pr_assignee: ${{ assignees }}
+          pr_reviewer: ${{ env.reviewers }}
+          pr_assignee: ${{ env.assignees }}
