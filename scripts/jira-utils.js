@@ -14,6 +14,7 @@ module.exports = {
   transitionUrl: "/transitions",
   browseUrl: "/browse/",
 
+  jiraTransitionIdBuildReady: 231
   jiraTransitionIdProductReleaseReady: 23,
   jiraTransitionIdReadyForQA: 341,
   jiraTransitionIdEngApproved: 321,
