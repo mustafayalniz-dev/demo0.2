@@ -61,6 +61,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: set assignees and reviewers
+        run: | 
+          echo "assignees=$(node scripts/getPRMeta.js assignees)" >> $GITHUB_ENV
+          echo "reviewers=$(node scripts/getPRMeta.js reviewers)" >> $GITHUB_ENV
       - name: Merge ${{  github.head_ref }} -> develop
         if:   ${{ matrix.upstream_release }} != ''
         uses: devmasx/merge-branch@v1.3.1
@@ -78,5 +82,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Pulling ${{ github.head_ref }} into develop "
           pr_body: "*An automated PR for Release Train Branch develop * "
-          pr_reviewer: "mluedke,sbiren"
-          pr_assignee: "mluedke,sbiren"
+          pr_reviewer: ${{ reviewers }}
+          pr_assignee: ${{ assignees }}
