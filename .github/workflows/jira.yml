@@ -3,7 +3,7 @@ name: Create Jira Comment with all commit details in Push
 on:
   push:
     branches:
-      - "release_*"
+      - "*"
 
 jobs:
   push:
