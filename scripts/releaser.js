@@ -77,6 +77,8 @@ async function transitionAllIssues() {
   const linkedIssues = await getLinkedIssues(statuses)
   var allIssues = await issues.concat(linkedIssues)
 
+  console.log("Listing all issues")
+  console.log(allIssues)
   await transitionIssuesAsReleased(allIssues)
 }
 
