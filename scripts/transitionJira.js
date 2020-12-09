@@ -33,9 +33,11 @@ async function transitionIssues( issueKeys ) {
 		var isInReview = false
 		try {
     			isInReview = await jiraUtils.isInReview(issue_id)
+			console.log("IsInREview " + isInReview)
 		} catch(err) {
 			console.log(err)
 		}
+		console.log("ISINREVIEW " isInReview)
     		if (isInReview) {
       			console.log("Transitioning " + index + "th ticket " + issue_id + " to BuildReady")
       			await jiraUtils.transitionRequest(issue_id, jiraUtils.jiraTransitionIdBuildReady)
