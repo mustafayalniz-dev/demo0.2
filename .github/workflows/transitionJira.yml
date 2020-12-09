@@ -7,7 +7,7 @@ on:
 jobs:
   push:
     name: Transition Jira Issue when Pull Request Merged
-    if: github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'temporary')
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
