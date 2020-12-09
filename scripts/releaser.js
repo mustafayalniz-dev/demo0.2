@@ -96,7 +96,7 @@ async function transitionIssuesAsReleased(issues) {
 }
 
 async function getJiraTickets(statuses) {
-  await jiraUtils.loadJiraCredentials()
+//  await jiraUtils.loadJiraCredentials()
   const ticketsRDE = await jiraUtils.listForTicketsForProject(jiraUtils.projectName)
 
   var issueURLList = []
