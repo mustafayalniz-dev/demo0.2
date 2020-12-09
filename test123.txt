@@ -8,3 +8,4 @@ test6th line1258
 test7th line
 test8th line
 transition-test
+test12
