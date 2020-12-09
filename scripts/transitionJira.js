@@ -29,7 +29,7 @@ async function getIssueKeys() {
 }
 
 async function transitionIssues( issueKeys ) {
-	issueKeys.forEach( async function (issue_id, index ) {
+	issueKeys.forEach( async (issue_id, index ) => {
 		var isInReview = false
 		try {
     			isInReview = await jiraUtils.isInReview(issue_id)
